@@ -32,10 +32,9 @@ h1 {
 .grid {
     padding: 5px;
     display: grid;
-    grid-template-columns: repeat(100, 20px);
     overflow: scroll;
-    width: 90%;
-    height: 50%;
+    max-width: 90%;
+    max-height: 50%;
     background-color: white;
 }
 
