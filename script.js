@@ -8,7 +8,7 @@ createCellsElements();
 
 
 function createEmptyMatrix() {
-    return Array.from({ length: rows }, () => Array(cols).fill(false));
+    return Array.from({ length: rows }, () => Array(cols).fill(0));
 }
 
 console.log(createEmptyMatrix())
@@ -21,8 +21,19 @@ function createCellsElements() {
         for (let col = 0; col < cols; col++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
+            cell.id = `${row}-${col}`;
             gridContainer.appendChild(cell);
         }
     }
 }
 
+let allCells = document.querySelectorAll(".cell") && document.querySelectorAll(".cell");
+
+const handleCellClick = (cell) => {
+    cell.classList.toggle("alive");
+    console.log(cell.id);
+}
+
+allCells.forEach((cell) => {
+    cell.addEventListener("click", () => handleCellClick(cell))
+})
