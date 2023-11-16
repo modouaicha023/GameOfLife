@@ -1,21 +1,29 @@
 const gridContainer = document.querySelector('.grid');
 
-let rows = 50;
-let cols = 50;
+let rows = 100;
+let cols = 100;
+
+function initMatrix() {
+    return Array.from({ length: rows }, () => Array(cols).fill(0));
+}
 
 gridContainer.style.gridTemplateColumns = `repeat(${cols ? cols : 100}, 20px)`;
 gridContainer.style.gridTemplateRows = `repeat(${rows ? rows : 100}, 20px)`;
 
 
 let cellsMatrix = initMatrix();
-let AllCellNeigbors = [];
+cellsMatrix[4][9] = 1;
+cellsMatrix[4][10] = 1;
+cellsMatrix[4][11] = 1;
+cellsMatrix[3][11] = 1;
+cellsMatrix[2][10] = 1;
+cellsMatrix[8][7] = 1;
+cellsMatrix[8][5] = 1;
+cellsMatrix[8][6] = 1;
+let allCells = [];
 
 createCellsElements();
 
-
-function initMatrix() {
-    return Array.from({ length: rows }, () => Array(cols).fill(0));
-}
 
 function createCellsElements() {
     for (let i = 0; i < rows; i++) {
@@ -24,33 +32,24 @@ function createCellsElements() {
             cell.className = 'cell';
             cell.id = `${i}-${j}`;
             gridContainer.appendChild(cell);
+            allCells.push(cell);
         }
     }
 }
 
-let allCells = document.querySelectorAll(".cell");
-console.log(allCells);
-const handleCellClick = (cell) => {
-    const idCell = cell.id;
-    const cellRow = Number(idCell.split("-")[0]);
-    const cellCol = Number(idCell.split("-")[1]);
-
-    checkRules(cellRow, cellCol);
-
-    cellsMatrix[cellRow][cellCol] = cellsMatrix[cellRow][cellCol] === 1 ? 0 : 1;
-
-
-    const neighbors = getAliveCellNeighbors(cellRow, cellCol);
-
-
-}
+updateCellClasses();
 
 allCells.forEach((cell) => {
     cell.addEventListener("click", () => handleCellClick(cell));
+});
 
-})
-
-
+function handleCellClick(cell) {
+    const idCell = cell.id;
+    const cellRow = Number(idCell.split("-")[0]);
+    const cellCol = Number(idCell.split("-")[1]);
+    cellsMatrix[cellRow][cellCol] = 1 - cellsMatrix[cellRow][cellCol];
+    updateCellClasses();
+}
 
 function getAliveCellNeighbors(row, col) {
     let neighbors = [];
@@ -61,7 +60,6 @@ function getAliveCellNeighbors(row, col) {
                 if (!(i === row && j === col) && cellsMatrix[i][j] === 1) {
                     neighbors = [...neighbors, { "row": i, "col": j }];
                 }
-
             }
         }
     }
@@ -69,33 +67,37 @@ function getAliveCellNeighbors(row, col) {
     return neighbors;
 }
 
+let generation = 0;
+
 function UpdateCell() {
+    const updatedMatrix = initMatrix();
     cellsMatrix.forEach((row, i) => {
         row.forEach((col, j) => {
-            checkRules(i, j);
-        })
+            const numNeighborsAlive = getAliveCellNeighbors(i, j).length;
+
+            if (cellsMatrix[i][j] === 0 && numNeighborsAlive === 3) {
+                updatedMatrix[i][j] = 1;
+            } else if (cellsMatrix[i][j] === 1 && (numNeighborsAlive === 3 || numNeighborsAlive === 2)) {
+                updatedMatrix[i][j] = 1;
+            } else if (numNeighborsAlive < 2 || numNeighborsAlive > 3) {
+                updatedMatrix[i][j] = 0;
+            }
+        });
+    });
+
+    cellsMatrix = updatedMatrix;
+    updateCellClasses();
+    generation++;
+}
+
+function updateCellClasses() {
+    allCells.forEach((cell) => {
+        const idCell = cell.id;
+        const cellRow = Number(idCell.split("-")[0]);
+        const cellCol = Number(idCell.split("-")[1]);
+        cell.classList.toggle("alive", cellsMatrix[cellRow][cellCol] === 1);
     });
 }
 
-function checkRules(row, col) {
-    const numNeighborsAlive = getAliveCellNeighbors(row, col).length;
-
-    const cell = document.getElementById(`${row}-${col}`)
-
-    if (cellsMatrix[row][col] === 0 && numNeighborsAlive === 3) {
-        cellsMatrix[row][col] = 1;
-        cell.classList.add("alive");
-    }
-    if (cellsMatrix[row][col] === 1 && numNeighborsAlive <= 3) {
-        cellsMatrix[row][col] = 1;
-        cell.classList.add("alive");
-    }
-    else {
-        cellsMatrix[row][col] = 0;
-        cell.classList.remove("alive");
-    }
-
-}
-
-let interval = .1 * 1000;// 1 seconde
-setInterval(UpdateCell, interval)
+let interval = .1 * 1000; // 1 second
+setInterval(UpdateCell, interval);
