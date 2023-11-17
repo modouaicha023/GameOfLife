@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Arbutus&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -34,6 +35,10 @@ body {
     scrollbar-width: none;
 
     padding: 0 20px;
+}
+
+.container>div {
+    margin-top: 20px;
 }
 
 .grid {
@@ -81,9 +86,7 @@ body {
     border: none;
     width: 50%;
     font-family: 'Arbutus', serif;
-
-
-
+    transition: .3s ease;
 }
 
 
@@ -128,4 +131,79 @@ body {
     background-color: #9EFF00;
     border: 1px rgb(0, 0, 0);
     border-style: solid;
+}
+
+#formControl {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    font-size: larger;
+    font-weight: bolder;
+    text-align: center;
+    color: rgb(100, 100, 100);
+
+}
+
+#formControl label {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: #9EFF00;
+    font-size: larger;
+    font-weight: lighter;
+    font-family: 'Arbutus', serif;
+
+}
+
+#formControl label input {
+    font-size: medium;
+    font-weight: bolder;
+    background-color: #9EFF00;
+    font-family: 'Arbutus', serif;
+
+    margin-top: 10px;
+    padding: 10px;
+
+    border-radius: 10px;
+    outline: none;
+    border: none;
+
+    width: 70px;
+    text-align: center;
+    scrollbar-width: thin;
+}
+
+/* @media (max-height : 500px) {
+    #formControl {
+        position: fixed;
+        top: 150px;
+        right: 5px;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+
+        border: 2px solid #000000;
+        font-size: larger;
+        font-weight: bolder;
+        color: rgb(100, 100, 100)
+    }
+
+} */
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

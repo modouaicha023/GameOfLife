@@ -13,7 +13,17 @@
     <div class="container">
         <div id="game-of-life"></div>
         <div class="grid"></div>
-
+        <form id="formControl">
+            <label for="rows"> Rows
+                <input type="number" min="5" max="200" name="rows" id="rows" value="50">
+            </label>
+            <label for="columns"> Columns
+                <input type="number" min="5" max="200" name="columns" id="columns" value="50">
+            </label>
+            <label for="speed"> Speed
+                <input type="number" min=".1" max="10" name="speed" id="speed" value="1">
+            </label>
+        </form>
         <div id="command">
             <button id="play">
                 Reset
@@ -25,7 +35,6 @@
                 Stop
             </button>
         </div>
-
 
     </div>
 
