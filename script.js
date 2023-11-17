@@ -100,4 +100,4 @@ function updateCellClasses() {
 }
 
 let interval = .1 * 1000; // 1 second
-setInterval(UpdateCell, interval);
+// setInterval(UpdateCell, interval);
