@@ -10,10 +10,13 @@ let intervalId;
 let generation = 0;
 let cellsMatrix = [];
 let allCells = [];
+
+//this function initialize a new matrice 
 function initMatrix(initRows, initCols) {
     return Array.from({ length: initRows }, () => Array.from({ length: initCols }).fill(0));
 }
 
+//this function update the state of all the cell depends of their value in the Matrix ---> cellMatrix
 function updateCellClasses() {
     allCells.forEach((cell) => {
         const idCell = cell.id;
@@ -23,6 +26,7 @@ function updateCellClasses() {
     });
 }
 
+//this function create the cell elments and add their them in array --> allCells
 function createCellsElements(rows, cols, allCells) {
     gridContainer.innerHTML = "";
     allCells.length = 0;
@@ -37,12 +41,10 @@ function createCellsElements(rows, cols, allCells) {
     }
 }
 
+//this function init a new Round of a game depends of the value of the rows and cols  ---> inputRows && inputCols 
 function newRound(r, l) {
 
-
-
-
-    // Step1 is to initialize the matrix with each case the value 0 
+    // Step1 is to initialize the matrix with each case the value 0
     cellsMatrix = initMatrix(inputRows.value, inputColunms.value);
 
     //Step2 is to create the cells elements in the dom with the length of this matrix
@@ -52,6 +54,7 @@ function newRound(r, l) {
     gridContainer.style.gridTemplateRows = `repeat(${inputRows.value}, 20px)`;
     gridContainer.style.gridTemplateColumns = `repeat(${inputColunms.value}, 20px)`;
 
+    //this function set to 1 a random case in the matrix
     function setRandomAliveCell(Nrows, Ncolumns) {
         for (let index = 0; index < Nrows * Ncolumns; index++) {
             const randomRow = Math.floor(Math.random() * Nrows);
@@ -59,11 +62,15 @@ function newRound(r, l) {
             cellsMatrix[randomRow][randomCol] = 1;
         }
     }
-    // set alive some cell
+
+    // set alive some case in the the matrix
     setRandomAliveCell(inputRows.value, inputColunms.value);
+
+    //update the state of each cell
     updateCellClasses();
 
 
+    //this function recover the id of the cell and toggle the state of that cell
     function handleCellClick(cell) {
         const idCell = cell.id;
         const cellRow = Number(idCell.split("-")[0]);
@@ -72,10 +79,20 @@ function newRound(r, l) {
         cellsMatrix[cellRow][cellCol] = 1 - cellsMatrix[cellRow][cellCol];
     }
 
+    //This target all the cell elements in the DOM and add for each a "click" Event  
     allCells.forEach((cell) => {
         cell.addEventListener("click", () => handleCellClick(cell));
     });
 
+    //This function search all the neighbors alive in a specific cell
+    // Every cell  have maximum 8 neigbors
+    //for exemple take a cell C1 in the postion rowC1 & colC1 
+    //all the neighbors for the cell C1 are in the position between :
+    // ---for the row : [rowC1 - 1, rowC1, rowC1 + 1] 
+    // ---for the cols : [colC1 - 1, colC1, colC1 + 1] 
+    //this function also check in the loop if the index dont overflow the the length of the matrix
+    //and also check if the row and the col is never equal (that's mean a the cell C1 itself )
+    //after the function return array who contains all C1 alive neigbours  
     function getAliveCellNeighbors(row, col) {
         let neighbors = [];
 
@@ -92,6 +109,7 @@ function newRound(r, l) {
         return neighbors;
     }
 
+    //this function check all the rules to the game of life
     function UpdateCell() {
         const numRows = cellsMatrix.length;
         const numCols = cellsMatrix[0].length;
@@ -118,6 +136,7 @@ function newRound(r, l) {
     }
 
 
+    //this function start the nextGeneration
     function startGame() {
         if (!intervalId) {
             intervalId = setInterval(UpdateCell, interval);
@@ -125,20 +144,26 @@ function newRound(r, l) {
         console.log("Game on play");
     }
 
+    //this function stop the game
     function stopGame() {
         clearInterval(intervalId);
         intervalId = null;
         console.log("Game Stopped");
     }
+
+    //this function initialize the game by just refreshing the page 😏
     function resetGame() {
         window.location.reload();
     }
 
+    //add "click" Event  for the three button
     btnPlay.addEventListener("click", startGame);
     btnStop.addEventListener("click", stopGame);
     btnReset.addEventListener("click", resetGame);
 }
 
+//this function stop the game and check if row and column are correct (they sould be > 0 ) 
+//and after run a new round with new Row or/and Col 
 function updateRowsCols() {
     clearInterval(intervalId);
     intervalId = null;
@@ -146,6 +171,11 @@ function updateRowsCols() {
         newRound(inputRows.value, inputColunms.value);
 }
 
+//add "change" Event on the Rows input and Columns input
+// for each, we call the the function ---> updateRowsCols() <--- for a new round.
+//I launch a new round because if the row or the columns change, the matrix will change
+// and if the matrix, the the position of all the elements changes, and their neigbors of course
+//in this case we should reset the previous game and run a new round with the new row or/and cols.
 inputRows.addEventListener("change", () => {
     updateRowsCols();
 });
@@ -155,16 +185,31 @@ inputColunms.addEventListener("change", () => {
 });
 
 
+//add "change" Event on the speed input
+//we first stop the game
+//after we check if the value is > 0
+//if its true we update the value of the speed
 inputSpeed.addEventListener("change", () => {
     clearInterval(intervalId);
     intervalId = null;
-    const speedValue = parseFloat(inputSpeed.value);
-    if (!isNaN(speedValue) && speedValue > 0) {
-        interval = speedValue * 1000;
+    if (inputSpeed.value > 0) {
+        interval = inputSpeed.value * 1000;
     }
 });
 
+//this last lauch a new round when the page is load
 window.addEventListener('load', function () {
     newRound(inputRows.value, inputColunms.value);
-    updateCellClasses()
 });
+
+/* I really finish this project touti ma abandonné 😭😭 */
+
+//
+/*
+        You maybe need to stop the animation in the background to better evaluate me
+        (i use this algo for some design stuff✨) 
+        because in the two other JS file, i use the the same code to do the animation
+        (the previous version of script.js code before refactoring).
+
+
+*/
