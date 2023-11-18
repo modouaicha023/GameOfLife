@@ -203,13 +203,3 @@ window.addEventListener('load', function () {
 });
 
 /* I really finish this project touti ma abandonné 😭😭 */
-
-//
-/*
-        You maybe need to stop the animation in the background to better evaluate me
-        (i use this algo for some design stuff✨) 
-        because in the two other JS file, i use the the same code to do the animation
-        (the previous version of script.js code before refactoring).
-
-
-*/

@@ -89,5 +89,6 @@ function updateCellClassStyle() {
     });
 }
 
-let intervalStyle = .5 * 1000; // 1 second
-setInterval(UpdateCellStyle, intervalStyle);
+// let intervalStyle = .5 * 1000; // 1 second
+// setInterval(UpdateCellStyle, intervalStyle);
+UpdateCellStyle()
