@@ -25,7 +25,7 @@ function updateCellClasses() {
 
 function createCellsElements(rows, cols, allCells) {
     gridContainer.innerHTML = "";
-    // allCells = [];
+    allCells.length = 0;
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             const cell = document.createElement('div');
@@ -52,7 +52,6 @@ function newRound(r, l) {
     gridContainer.style.gridTemplateRows = `repeat(${inputRows.value}, 20px)`;
     gridContainer.style.gridTemplateColumns = `repeat(${inputColunms.value}, 20px)`;
 
-    // set alive some cell
     function setRandomAliveCell(Nrows, Ncolumns) {
         for (let index = 0; index < Nrows * Ncolumns; index++) {
             const randomRow = Math.floor(Math.random() * Nrows);
@@ -60,6 +59,7 @@ function newRound(r, l) {
             cellsMatrix[randomRow][randomCol] = 1;
         }
     }
+    // set alive some cell
     setRandomAliveCell(inputRows.value, inputColunms.value);
     updateCellClasses();
 
@@ -131,11 +131,7 @@ function newRound(r, l) {
         console.log("Game Stopped");
     }
     function resetGame() {
-        stopGame();
-        cellsMatrix = initMatrix(10, 10);
-        updateCellClasses()
-
-        // window.location.reload();
+        window.location.reload();
     }
 
     btnPlay.addEventListener("click", startGame);
@@ -143,20 +139,19 @@ function newRound(r, l) {
     btnReset.addEventListener("click", resetGame);
 }
 
-
+function updateRowsCols() {
+    clearInterval(intervalId);
+    intervalId = null;
+    if (inputRows.value > 0 && inputColunms.value > 0)
+        newRound(inputRows.value, inputColunms.value);
+}
 
 inputRows.addEventListener("change", () => {
-    clearInterval(intervalId);
-    intervalId = null;
-    newRound(inputRows.value, inputColunms.value);
-
-
+    updateRowsCols();
 });
-inputColunms.addEventListener("change", () => {
-    clearInterval(intervalId);
-    intervalId = null;
-    newRound(inputRows.value, inputColunms.value);
 
+inputColunms.addEventListener("change", () => {
+    updateRowsCols()
 });
 
 
