@@ -49,8 +49,7 @@ The game follows simple rules:
 
 ### Zooming
 
-- There's a function `updateZoom` to handle zoom changes.
-- Mouse wheel events are used to zoom in and out, and the browser's default zoom is disabled.
+- There's a function `updateZoom` to handle zoom changes in function of the inputZoom.
 
 ## Functionality
 

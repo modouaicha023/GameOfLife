@@ -45,6 +45,8 @@ function createCellsElements(rows, cols, allCells) {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
             const cell = document.createElement('div');
+            cell.style.width = `${inputZoom.value}px`;
+            cell.style.height = `${inputZoom.value}px`;
             cell.className = 'cell';
             cell.id = `${i}-${j}`;
             gridContainer.appendChild(cell);
@@ -63,8 +65,8 @@ function newRound() {
     createCellsElements(inputRows.value, inputColunms.value, allCells);
 
     // Step3 is update the  width and height of the  gridContainer element
-    gridContainer.style.gridTemplateRows = `repeat(${inputRows.value}, 20px)`;
-    gridContainer.style.gridTemplateColumns = `repeat(${inputColunms.value}, 20px)`;
+    gridContainer.style.gridTemplateRows = `repeat(${inputRows.value}, ${inputZoom.value}px)`;
+    gridContainer.style.gridTemplateColumns = `repeat(${inputColunms.value}, ${inputZoom.value}px)`;
 
     //this function set to 1 a random case in the matrix
     function setRandomAliveCell(Nrows, Ncolumns, percentageAlive) {
@@ -177,6 +179,8 @@ function newRound() {
     //this function initialize the grid 
     function handleClearGrid() {
         handleStopGame();
+        initZoom();
+        updateZoom();
         cellsMatrix = initMatrix(inputRows.value, inputColunms.value);
         updateCellClasses();
         iniGeneration();
@@ -202,6 +206,8 @@ function newRound() {
 //and after run a new round with new Row or/and Col 
 function updateRowsCols() {
     clearInterval(intervalId);
+    initZoom();
+    updateZoom();
     intervalId = null;
     if (inputRows.value > 0 && inputColunms.value > 0)
         newRound();
@@ -245,7 +251,16 @@ function updateZoom() {
     });
 
 }
+function initZoom() {
+    inputZoom.value = 50;
+    // gridContainer.style.gridTemplateRows = `repeat(${inputRows.value}, ${inputZoom.value}px)`;
+    // gridContainer.style.gridTemplateColumns = `repeat(${inputColunms.value}, ${inputZoom.value}px)`;
+    // cellElements.forEach((cellElement) => {
+    //     cellElement.style.width = `${inputZoom.value}px`;
+    //     cellElement.style.height = `${inputZoom.value}px`;
+    // });
 
+}
 //
 inputZoom.addEventListener('input', updateZoom);
 
@@ -253,40 +268,6 @@ inputZoom.addEventListener('input', updateZoom);
 window.addEventListener('load', function () {
     newRound();
 });
-
-
-function zoomIn() {
-    const currentZoom = parseFloat(inputZoom.value);
-    const newZoom = currentZoom + 5;
-    inputZoom.value = newZoom;
-    updateZoom();
-    gridContainer.style.cursor = 'zoom-in';
-}
-
-function zoomOut() {
-    const currentZoom = parseFloat(inputZoom.value);
-    const newZoom = Math.max(1, currentZoom - 5);
-    inputZoom.value = newZoom;
-    updateZoom();
-    gridContainer.style.cursor = 'zoom-out';
-}
-
-function handleMouseWheel(event) {
-    if (event.ctrlKey) {
-        event.preventDefault();
-        const zoomDirection = event.deltaY < 0 ? "in" : "out";
-        if (zoomDirection === "in") {
-            zoomIn();
-        } else {
-            zoomOut();
-        }
-    }
-
-    document.body.style.zoom = 'reset';
-
-}
-
-window.addEventListener("wheel", handleMouseWheel);
 
 
 /* I really finish this project touti ma abandonné 😭😭 */
