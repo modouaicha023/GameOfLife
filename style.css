@@ -36,12 +36,31 @@ body {
     padding: 0 20px;
 }
 
-
-#generation{
+#link {
     position: fixed;
     top: 20px;
-    right:50px
-    ;
+    left: 50px;
+    color: black;
+    background-color: #9dff00a8;
+    padding: 10px;
+
+    font-size: larger;
+    font-weight: bolder;
+    font-family: 'Arbutus', serif;
+
+    border: 5px solid #000000;
+    border-radius: 10px;
+}
+
+#link a img {
+    width: 32px;
+    height: 32px;
+}
+
+#generation {
+    position: fixed;
+    top: 20px;
+    right: 50px;
     color: black;
     background-color: #9dff00a8;
     padding: 10px;
