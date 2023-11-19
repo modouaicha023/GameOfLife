@@ -1,10 +1,13 @@
 const gridContainer = document.querySelector('.grid');
 const btnPlay = document.getElementById("play");
 const btnStop = document.getElementById("stop");
+const btnClear = document.getElementById("clear");
+const btnRandom = document.getElementById("random");
 const btnReset = document.getElementById("reset");
 const inputSpeed = document.getElementById("speed");
 const inputRows = document.getElementById("rows");
 const inputColunms = document.getElementById("columns");
+const inputRateRandomCells = document.getElementById("rateRandomCells");
 let interval = inputSpeed.value * 1000;
 let intervalId;
 let generation = 0;
@@ -55,16 +58,21 @@ function newRound(r, l) {
     gridContainer.style.gridTemplateColumns = `repeat(${inputColunms.value}, 20px)`;
 
     //this function set to 1 a random case in the matrix
-    function setRandomAliveCell(Nrows, Ncolumns) {
-        for (let index = 0; index < Nrows * Ncolumns; index++) {
+    function setRandomAliveCell(Nrows, Ncolumns, percentageAlive) {
+        const totalCells = Nrows * Ncolumns;
+        const numAliveCells = Math.floor((percentageAlive / 100) * totalCells);
+
+        for (let index = 0; index < numAliveCells; index++) {
             const randomRow = Math.floor(Math.random() * Nrows);
             const randomCol = Math.floor(Math.random() * Ncolumns);
             cellsMatrix[randomRow][randomCol] = 1;
         }
     }
 
+
+
     // set alive some case in the the matrix
-    setRandomAliveCell(inputRows.value, inputColunms.value);
+    setRandomAliveCell(inputRows.value, inputColunms.value, inputRateRandomCells.value);
 
     //update the state of each cell
     updateCellClasses();
@@ -137,7 +145,7 @@ function newRound(r, l) {
 
 
     //this function start the nextGeneration
-    function startGame() {
+    function handleStartGame() {
         if (!intervalId) {
             intervalId = setInterval(UpdateCell, interval);
         }
@@ -145,21 +153,37 @@ function newRound(r, l) {
     }
 
     //this function stop the game
-    function stopGame() {
+    function handleStopGame() {
         clearInterval(intervalId);
         intervalId = null;
         console.log("Game Stopped");
     }
 
     //this function initialize the game by just refreshing the page 😏
-    function resetGame() {
+    function handleResetGame() {
         window.location.reload();
     }
 
+    //this function initialize the grid 
+    function handleClearGrid() {
+        handleStopGame();
+        cellsMatrix = initMatrix(inputRows.value, inputColunms.value);
+        updateCellClasses();
+    }
+
+    function handleRandomCell() {
+        handleStopGame();
+        cellsMatrix = initMatrix(inputRows.value, inputColunms.value);
+        setRandomAliveCell(inputRows.value, inputColunms.value, inputRateRandomCells.value)
+        updateCellClasses();
+    }
+
     //add "click" Event  for the three button
-    btnPlay.addEventListener("click", startGame);
-    btnStop.addEventListener("click", stopGame);
-    btnReset.addEventListener("click", resetGame);
+    btnPlay.addEventListener("click", handleStartGame);
+    btnStop.addEventListener("click", handleStopGame);
+    btnReset.addEventListener("click", handleResetGame);
+    btnClear.addEventListener("click", handleClearGrid);
+    btnRandom.addEventListener("click", handleRandomCell);
 }
 
 //this function stop the game and check if row and column are correct (they sould be > 0 ) 
