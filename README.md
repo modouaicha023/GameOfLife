@@ -58,13 +58,12 @@ The game follows simple rules:
 - Click on cells to toggle their state.
 - Use play, stop, reset, clear, and random buttons to control the simulation.
 
-Here a quick simulation
+Here a quick simulation : 
 
-<h4 style="text-align:center">
+https://github.com/modouaicha023/GameOfLife/assets/86145486/81d346f5-f498-4d56-8183-177457d90943
+<h4 align="center">
 note : The speed oh this video has accelerated x5 to reduce the size of the video
 </h4>
 
-You can watch the normal simulation on my youtube channel
+### You can watch the normal simulation on my youtube channel
 [![Video](https://img.youtube.com/vi/_bzxRj-jlLE/maxresdefault.jpg)](https://www.youtube.com/watch?v=_bzxRj-jlLE)
-
-## Conclusion
