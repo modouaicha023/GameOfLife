@@ -81,7 +81,7 @@ function newRound() {
 
 
     // set alive some case in the the matrix
-    setRandomAliveCell(inputRows.value, inputColunms.value, inputRateRandomCells.value);
+    // setRandomAliveCell(inputRows.value, inputColunms.value, inputRateRandomCells.value);
 
     //update the state of each cell
     updateCellClasses();
