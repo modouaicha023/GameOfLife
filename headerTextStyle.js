@@ -210,5 +210,5 @@ function updateCellClassStyleText() {
     });
 }
 
-let intervalStyleText = 20 * 1000; // 5 second
+let intervalStyleText = 10 * 1000; // 1 second
 setInterval(UpdateCellStyleText, intervalStyleText);

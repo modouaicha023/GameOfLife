@@ -12,7 +12,8 @@
 <body id="body">
     <div class="container">
         <div id="game-of-life"></div>
-        <div class="grid"></div>
+        <h1 id="generation"></h1>
+        <div class="grid zoom-area"></div>
         <form id="formControl">
             <label for="rows"> Rows
                 <input type="number" min="1" max="200" name="rows" id="rows" value="50">
@@ -25,6 +26,9 @@
             </label>
             <label for="rateRandomCells"> Rate Random Cells (%)
                 <input type="number" min="10" max="50" name="rateRandomCells" id="rateRandomCells" value="30">
+            </label>
+            <label for="zoom"> Zoom
+                <input type="range" name="zoom" id="zoom" min="5" max="100" step="1">
             </label>
         </form>
         <div id="command">

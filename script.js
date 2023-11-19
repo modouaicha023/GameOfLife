@@ -8,15 +8,24 @@ const inputSpeed = document.getElementById("speed");
 const inputRows = document.getElementById("rows");
 const inputColunms = document.getElementById("columns");
 const inputRateRandomCells = document.getElementById("rateRandomCells");
+const inputZoom = document.getElementById('zoom');
+let numberOfGeneration = document.getElementById('generation');
+
 let interval = inputSpeed.value * 1000;
 let intervalId;
 let generation = 0;
+numberOfGeneration.innerHTML = generation;
 let cellsMatrix = [];
 let allCells = [];
 
 //this function initialize a new matrice 
 function initMatrix(initRows, initCols) {
     return Array.from({ length: initRows }, () => Array.from({ length: initCols }).fill(0));
+}
+
+function iniGeneration() {
+    generation = 0;
+    numberOfGeneration.innerHTML = generation;
 }
 
 //this function update the state of all the cell depends of their value in the Matrix ---> cellMatrix
@@ -45,7 +54,7 @@ function createCellsElements(rows, cols, allCells) {
 }
 
 //this function init a new Round of a game depends of the value of the rows and cols  ---> inputRows && inputCols 
-function newRound(r, l) {
+function newRound() {
 
     // Step1 is to initialize the matrix with each case the value 0
     cellsMatrix = initMatrix(inputRows.value, inputColunms.value);
@@ -141,6 +150,7 @@ function newRound(r, l) {
         cellsMatrix = updatedMatrix;
         updateCellClasses();
         generation++;
+        numberOfGeneration.innerHTML = generation;
     }
 
 
@@ -169,6 +179,7 @@ function newRound(r, l) {
         handleStopGame();
         cellsMatrix = initMatrix(inputRows.value, inputColunms.value);
         updateCellClasses();
+        iniGeneration();
     }
 
     function handleRandomCell() {
@@ -176,6 +187,7 @@ function newRound(r, l) {
         cellsMatrix = initMatrix(inputRows.value, inputColunms.value);
         setRandomAliveCell(inputRows.value, inputColunms.value, inputRateRandomCells.value)
         updateCellClasses();
+        iniGeneration();
     }
 
     //add "click" Event  for the three button
@@ -192,7 +204,8 @@ function updateRowsCols() {
     clearInterval(intervalId);
     intervalId = null;
     if (inputRows.value > 0 && inputColunms.value > 0)
-        newRound(inputRows.value, inputColunms.value);
+        newRound();
+    iniGeneration();
 }
 
 //add "change" Event on the Rows input and Columns input
@@ -200,11 +213,11 @@ function updateRowsCols() {
 //I launch a new round because if the row or the columns change, the matrix will change
 // and if the matrix, the the position of all the elements changes, and their neigbors of course
 //in this case we should reset the previous game and run a new round with the new row or/and cols.
-inputRows.addEventListener("change", () => {
+inputRows.addEventListener("input", () => {
     updateRowsCols();
 });
 
-inputColunms.addEventListener("change", () => {
+inputColunms.addEventListener("input", () => {
     updateRowsCols()
 });
 
@@ -213,7 +226,7 @@ inputColunms.addEventListener("change", () => {
 //we first stop the game
 //after we check if the value is > 0
 //if its true we update the value of the speed
-inputSpeed.addEventListener("change", () => {
+inputSpeed.addEventListener("input", () => {
     clearInterval(intervalId);
     intervalId = null;
     if (inputSpeed.value > 0) {
@@ -221,9 +234,59 @@ inputSpeed.addEventListener("change", () => {
     }
 });
 
+function updateZoom() {
+    console.log(inputZoom.value);
+    const cellElements = document.querySelectorAll(".cell");
+    gridContainer.style.gridTemplateRows = `repeat(${inputRows.value}, ${inputZoom.value}px)`;
+    gridContainer.style.gridTemplateColumns = `repeat(${inputColunms.value}, ${inputZoom.value}px)`;
+    cellElements.forEach((cellElement) => {
+        cellElement.style.width = `${inputZoom.value}px`;
+        cellElement.style.height = `${inputZoom.value}px`;
+    });
+
+}
+
+//
+inputZoom.addEventListener('input', updateZoom);
+
 //this last lauch a new round when the page is load
 window.addEventListener('load', function () {
-    newRound(inputRows.value, inputColunms.value);
+    newRound();
 });
+
+
+function zoomIn() {
+    const currentZoom = parseFloat(inputZoom.value);
+    const newZoom = currentZoom + 5;
+    inputZoom.value = newZoom;
+    updateZoom();
+    gridContainer.style.cursor = 'zoom-in';
+}
+
+function zoomOut() {
+    const currentZoom = parseFloat(inputZoom.value);
+    const newZoom = Math.max(1, currentZoom - 5);
+    inputZoom.value = newZoom;
+    updateZoom();
+    gridContainer.style.cursor = 'zoom-out';
+}
+
+function handleMouseWheel(event) {
+    if (event.ctrlKey) {
+        event.preventDefault();
+        const zoomDirection = event.deltaY < 0 ? "in" : "out";
+        if (zoomDirection === "in") {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    }
+
+    document.body.style.zoom = 'reset';
+
+}
+
+window.addEventListener("wheel", handleMouseWheel);
+
 
 /* I really finish this project touti ma abandonné 😭😭 */
