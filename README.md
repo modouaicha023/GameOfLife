@@ -67,3 +67,5 @@ note : The speed oh this video has accelerated x5 to reduce the size of the vide
 
 ### You can watch the normal simulation on my youtube channel
 [![Video](https://img.youtube.com/vi/_bzxRj-jlLE/maxresdefault.jpg)](https://www.youtube.com/watch?v=_bzxRj-jlLE)
+
+## Try out the Game : [Game Of Life](https://modouaicha023.github.io/GameOfLife/)
